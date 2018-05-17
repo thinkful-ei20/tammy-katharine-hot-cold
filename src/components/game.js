@@ -11,7 +11,7 @@ export default class Game extends React.Component {
         this.state={
             feedback: ["Make your guess!", "You got it!", "Very hot", "Hot", "Warm", "Cool", "Cold"],
             count: 0,
-            guesses:[12, 10, 15],
+            guesses:[],
             inputValue: 0,
         }
     }
@@ -23,19 +23,23 @@ export default class Game extends React.Component {
             guesses:[...this.state.guesses, this.state.inputValue]
         });
        event.target.reset();
+       this.setState({count: this.state.count + 1});
     }
+
+
 
     render() {
         
         return (
             console.log(this.state.guesses),
             console.log(this.state.inputValue),
+            console.log(this.state.count),
         <div>
             <Header />
             <GuessSection feedback="Make your guess!" 
                 onSubmit={(e) => this.handleSubmit(e)} 
                 onChange={(value) =>this.setState({inputValue:value})} />
-            <GuessCount count={3} />
+            <GuessCount count={this.state.count} />
             <GuessList  guesses={this.state.guesses} />
         </div>
         );
