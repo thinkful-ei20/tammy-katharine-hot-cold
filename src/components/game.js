@@ -5,11 +5,13 @@ import GuessSection from './guess-section';
 import GuessCount  from './guess-count';
 import GuessList from './guess-list';
 
+const RANDOM_NUMBER = Math.floor(Math.random() * 100); 
+
 export default class Game extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            feedback: ["Make your guess!", "You got it!", "Very hot", "Hot", "Warm", "Cool", "Cold"],
+            feedback: "Make your guess!",
             count: 0,
             guesses:[],
             inputValue: 0,
@@ -22,9 +24,24 @@ export default class Game extends React.Component {
         this.setState({
             guesses:[...this.state.guesses, this.state.inputValue]
         });
-       event.target.reset();
-       this.setState({count: this.state.count + 1});
+        this.handleNumberCheck();
+        event.target.reset();
+        this.setState({count: this.state.count + 1});
     }
+
+
+    handleNumberCheck(){
+        let inputNum = this.state.inputValue;
+        if (inputNum === RANDOM_NUMBER) {
+            this.setState({feedback: "You got it!"})
+        } else if (inputNum <= RANDOM_NUMBER + 5 &&  inputNum >= RANDOM_NUMBER -5  ) {
+            this.setState({feedback: "Very Hot!"})
+        } else if (inputNum <= RANDOM_NUMBER + 10 && inputNum >= RANDOM_NUMBER -10 ) {
+            this.setState({feedback: "Warm!"})
+        } else {
+            this.setState({feedback: "Cold!"})
+        }
+   }
 
 
 
@@ -36,7 +53,7 @@ export default class Game extends React.Component {
             console.log(this.state.count),
         <div>
             <Header />
-            <GuessSection feedback="Make your guess!" 
+            <GuessSection feedback={this.state.feedback}
                 onSubmit={(e) => this.handleSubmit(e)} 
                 onChange={(value) =>this.setState({inputValue:value})} />
             <GuessCount count={this.state.count} />
